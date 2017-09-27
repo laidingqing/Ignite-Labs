@@ -22,7 +22,7 @@
         <property name="serviceConfiguration">
             <list>
                 <bean class="org.apache.ignite.services.ServiceConfiguration">
-                    <property name="name" value="PaymentService"/>
+                    <property name="name" value="UserService"/>
                     <property name="service">
                         <bean class="com.github.ignite.app.ignite.impl.UserServiceImpl"/>
                     </property>

@@ -1,6 +1,7 @@
 package com.node.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Date;
  * Created by skylai on 2017/9/27.
  */
 @Getter
+@Setter
 public class User implements Serializable {
 
     private Long id;

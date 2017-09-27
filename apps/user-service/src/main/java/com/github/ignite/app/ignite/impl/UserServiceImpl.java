@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         long key = atomicLong.incrementAndGet();
+        user.setId(key);
         userCache.put(key, user);
     }
 
