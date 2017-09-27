@@ -4,6 +4,7 @@ apply plugin: "io.spring.dependency-management"
 
 dependencies {
     compile("mysql:mysql-connector-java:$mysqlConnectorVersion")
+    compile("org.springframework.boot:spring-boot-starter-data-cassandra:$springBootVersion")
 }
 
 dependencyManagement {

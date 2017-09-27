@@ -2,12 +2,24 @@
 
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cassandra="http://www.springframework.org/schema/data/cassandra"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd">
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/cql http://www.springframework.org/schema/cql/spring-cql-1.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/cassandra http://www.springframework.org/schema/data/cassandra/spring-cassandra.xsd">
+
+    <cassandra:cluster id="cassandraCluster" contact-points="127.0.0.1" port="9042"/>
+
+    <cassandra:converter/>
+    <cassandra:mapping />
+    <cassandra:session id="cassandraSession" cluster-ref="cassandraCluster" keyspace-name="apache_ignite"/>
+
+    <cassandra:template id="cqlTemplate"/>
 
     <bean id="mysqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -44,6 +56,18 @@
                     <property name="cacheStoreFactory">
                         <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
                             <constructor-arg value="com.node.data.cachestore.PaymentStore"/>
+                        </bean>
+                    </property>
+                </bean>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="userCache"/>
+                    <property name="readThrough" value="true"/>
+                    <property name="writeThrough" value="true"/>
+                    <property name="writeBehindEnabled" value="true"/>
+                    <property name="atomicityMode" value="TRANSACTIONAL"/>
+                    <property name="cacheStoreFactory">
+                        <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                            <constructor-arg value="com.node.data.cachestore.UserStore"/>
                         </bean>
                     </property>
                 </bean>

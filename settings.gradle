@@ -11,5 +11,9 @@ findProject(':apps:node-data')?.name = 'node-data'
 include 'apps:payment-service'
 findProject(':apps:payment-service')?.name = 'payment-service'
 
+include 'apps:user-service'
+findProject(':apps:user-service')?.name = 'user-service'
+
+
 include 'apps:gateway'
 findProject(':apps:gateway')?.name = 'gateway'

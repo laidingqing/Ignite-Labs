@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class IgniteConfig {
 
     public IgniteConfig() {
-        Ignite start = Ignition.start("bank-service-node-config.xml");
+        Ignite start = Ignition.start("payment-service-node-config.xml");
     }
 
 }

@@ -1,9 +1,7 @@
-package com.github.ignite.app;
+package com.github.ignite.app.ignite.config;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class IgniteConfig {
 
     public IgniteConfig() {
-        Ignite start = Ignition.start("data-node-config.xml");
+        Ignite start = Ignition.start("user-service-node-config.xml");
     }
 
 }

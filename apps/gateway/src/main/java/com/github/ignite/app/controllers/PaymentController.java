@@ -1,4 +1,4 @@
-package com.github.ignite.app;
+package com.github.ignite.app.controllers;
 
 import com.node.model.Payment;
 import com.node.services.PaymentService;
