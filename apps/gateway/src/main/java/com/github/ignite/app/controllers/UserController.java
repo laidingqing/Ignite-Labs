@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private Ignite ignite;
 
-    @PostMapping("/payment/add")
+    @PostMapping("/users/add")
     @ResponseBody
     public ResponseEntity<String> add() {
         UserService userService = ignite.services().serviceProxy(UserService.SERVICE_NAME, UserService.class, false);
@@ -34,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok("Created");
     }
 
-    @GetMapping("/payment/{id}")
+    @GetMapping("/users/{id}")
     @ResponseBody
     public ResponseEntity<User> find(@PathVariable("id") Long id) {
         UserService userService = ignite.services().serviceProxy(UserService.SERVICE_NAME, UserService.class, false);

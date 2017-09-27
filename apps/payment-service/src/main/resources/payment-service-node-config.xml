@@ -24,7 +24,7 @@
                 <bean class="org.apache.ignite.services.ServiceConfiguration">
                     <property name="name" value="PaymentService"/>
                     <property name="service">
-                        <bean class="com.github.ignite.app.ignite.impl.UserServiceImpl"/>
+                        <bean class="com.github.ignite.app.ignite.impl.PaymentServiceImpl"/>
                     </property>
                     <property name="totalCount" value="2"/>
                     <property name="maxPerNodeCount" value="1"/>
