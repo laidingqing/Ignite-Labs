@@ -1,0 +1,15 @@
+rootProject.name = 'POC-Apache-Ignite'
+
+include 'apps:app-commons'
+findProject(':apps:app-commons')?.name = 'app-commons'
+
+
+include 'apps:node-data'
+findProject(':apps:node-data')?.name = 'node-data'
+
+
+include 'apps:payment-service'
+findProject(':apps:payment-service')?.name = 'payment-service'
+
+include 'apps:gateway'
+findProject(':apps:gateway')?.name = 'gateway'

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+    <import resource="classpath*:poc-node-config.xml" />
+
+    <bean class="org.apache.ignite.configuration.IgniteConfiguration" parent="ignite.cfg">
+
+        <property name="userAttributes">
+            <map key-type="java.lang.String" value-type="java.lang.Boolean">
+                <entry key="data.node" value="false"/>
+                <entry key="payment.service.node" value="true"/>
+            </map>
+        </property>
+
+        <property name="serviceConfiguration">
+            <list>
+                <bean class="org.apache.ignite.services.ServiceConfiguration">
+                    <property name="name" value="PaymentService"/>
+                    <property name="service">
+                        <bean class="com.github.ignite.app.ignite.impl.PaymentServiceImpl"/>
+                    </property>
+                    <property name="totalCount" value="2"/>
+                    <property name="maxPerNodeCount" value="1"/>
+                    <property name="nodeFilter">
+                        <bean class="com.node.filters.PaymentServiceFilter"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+
+    </bean>
+
+</beans>

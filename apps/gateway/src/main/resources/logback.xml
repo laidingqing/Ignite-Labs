@@ -1,0 +1,16 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%level] [%date{ISO8601}] [%logger]: %msg%n</pattern>
+            <!-- %X{akkaSource} -->
+        </encoder>
+    </appender>
+
+    <logger name="com.github.ignite" level="DEBUG" />
+
+    <logger name="org.apache.ignite" level="WARN" />
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

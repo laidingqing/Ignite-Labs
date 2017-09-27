@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="mysqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://192.168.0.132:13306/apache_ignite_db"/>
+        <property name="username" value="root"/>
+        <property name="password" value="passwd"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="mysqlDataSource"/>
+    </bean>
+
+    <bean abstract="true" id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+
+        <property name="peerClassLoadingEnabled" value="true"/>
+
+        <property name="userAttributes">
+            <map key-type="java.lang.String" value-type="java.lang.Boolean">
+                <entry key="data.node" value="true"/>
+            </map>
+        </property>
+
+        <property name="cacheConfiguration">
+            <list>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="paymentCache"/>
+                    <property name="readThrough" value="true"/>
+                    <property name="writeThrough" value="true"/>
+                    <property name="writeBehindEnabled" value="true"/>
+                    <property name="atomicityMode" value="TRANSACTIONAL"/>
+                    <property name="nodeFilter">
+                        <bean class="com.node.filters.DataNodeFilter"/>
+                    </property>
+                    <property name="cacheStoreFactory">
+                        <bean class="javax.cache.configuration.FactoryBuilder" factory-method="factoryOf">
+                            <constructor-arg value="com.node.data.cachestore.PaymentStore"/>
+                        </bean>
+                    </property>
+                </bean>
+            </list>
+        </property>
+
+        <property name="includeEventTypes">
+            <list>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_STARTED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FINISHED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_FAILED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_TIMEDOUT"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_SESSION_ATTR_SET"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_TASK_REDUCED"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ"/>
+                <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED"/>
+            </list>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500..47509</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
